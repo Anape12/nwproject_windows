@@ -37,7 +37,7 @@ public class Login extends HttpServlet {
      */
     public Login() {
         super();
-        baseModel = new BaseModel();
+        this.baseModel = new BaseModel();
     }
 
 	/**
@@ -59,7 +59,7 @@ public class Login extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		// パラメータ取得処理
-		Map<String,Object> loginParam = baseModel.getParameter(request, response);
+		Map<String,Object> loginParam = this.baseModel.getParameter(request, response);
 		String name = (String)loginParam.get("userId");
 		String pass = (String)loginParam.get("password");
 
@@ -93,7 +93,7 @@ public class Login extends HttpServlet {
 		// ログイン後の遷移先画面を選択
 		if(result) {
 			if(level.equals("1")) {
-				System.out.println("ログイン成功（管理者）");
+				this.baseModel.writeInfo("ログイン成功（管理者）");
 				// ログイン成功（管理者画面）
 				HttpSession session = request.getSession();
 				session.setAttribute("loginUser",user);

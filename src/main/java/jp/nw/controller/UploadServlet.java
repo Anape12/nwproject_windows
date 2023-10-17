@@ -37,7 +37,6 @@ public class UploadServlet extends HttpServlet {
      */
     public UploadServlet() {
         super();
-        baseModel = new BaseModel();
     }
 
 	/**

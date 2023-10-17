@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jp.nw.base.BaseModel;
 import jp.nw.parts.DBBase;
 
-public class LoginLogic extends BaseModel {
+public class LoginLogic {
 
 	// ログインパラメータ
 	private Map<String, Object> param = null;

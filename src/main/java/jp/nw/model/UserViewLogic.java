@@ -9,9 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jp.nw.base.BaseModel;
 import jp.nw.parts.DBBase;
 
-public class UserViewLogic {
+public class UserViewLogic extends BaseModel{
 
 	// SQL発行オブジェクト
 	private DBBase dbCon = null;
@@ -25,6 +26,8 @@ public class UserViewLogic {
 	public List<User> findAll(){
 		List<User> userList = new ArrayList<>();
 
+		BaseModel.logger.writeInfo("UsreViewLogic-findAll");
+		
 		// Connection取得
 		dbCon = new DBBase();
 

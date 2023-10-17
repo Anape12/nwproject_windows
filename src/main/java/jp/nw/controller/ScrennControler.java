@@ -37,7 +37,6 @@ public class ScrennControler extends HttpServlet {
      */
     public ScrennControler() {
         super();
-        baseModel = new BaseModel();
     }
 
 	/**

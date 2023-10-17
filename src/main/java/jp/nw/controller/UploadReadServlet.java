@@ -36,7 +36,6 @@ public class UploadReadServlet extends HttpServlet {
      */
     public UploadReadServlet() {
         super();
-        baseModel = new BaseModel();
     }
 
 	/**
