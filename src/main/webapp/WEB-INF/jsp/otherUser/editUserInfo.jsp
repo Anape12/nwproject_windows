@@ -49,5 +49,6 @@ jQuery(window).on('load', function() {
 	</form>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/UserListCheck.js"></script>
 		<input class="search-btn3" style="margin-left:570px; margin-top:30px" type="submit" name="change" value="削除確定(工事中)">
+	<button class="search-btn2" style="margin-left:570px; margin-top:30px" name="userInfo" onclick="window.close();">ウィンドウを閉じる</button>
 </body>
 </html>

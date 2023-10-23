@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.nw.base.BaseModel;
 import jp.nw.model.User;
 import jp.nw.model.UserViewLogic;
 
@@ -21,13 +22,14 @@ import jp.nw.model.UserViewLogic;
 @WebServlet("/UserView")
 public class UserView extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private BaseModel logger = null;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public UserView() {
-//        super();
-        // TODO Auto-generated constructor stub
+        super();
+        this.logger = new BaseModel();
     }
 
 
@@ -41,10 +43,10 @@ public class UserView extends HttpServlet {
 		HttpSession session = request.getSession();
 		User loginUser = (User)session.getAttribute("loginUser");
 		for(User userinfo : userList) {
-			System.out.println(userinfo.getName());
+			this.logger.writeInfo(userinfo.getName());
 		}
 		if(loginUser == null) {
-			response.sendRedirect("/nwproject_B/");
+			response.sendRedirect("/nwproject/");
 		}else {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/otherUser/userList.jsp");
 			dispatcher.forward(request, response);
@@ -64,7 +66,7 @@ public class UserView extends HttpServlet {
 		User loginUser = (User)session.getAttribute("loginUser");
 
 		if(loginUser == null) {
-			response.sendRedirect("/nwproject_B/");
+			response.sendRedirect("/nwproject/");
 			request.setCharacterEncoding("UTF-8");
 			request.setAttribute("errorMsg","エラー");
 		}else {

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.nw.base.BaseModel;
 import jp.nw.model.User;
 import jp.nw.model.UserViewLogic;
 
@@ -25,13 +26,14 @@ import jp.nw.model.UserViewLogic;
 public class EditUserView extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Map<String, String> postMap;
-
+	private BaseModel logger = null;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EditUserView() {
         super();
         // TODO Auto-generated constructor stub
+        this.logger = new BaseModel();
     }
 
 
@@ -65,12 +67,12 @@ public class EditUserView extends HttpServlet {
 			UserViewLogic userview = new UserViewLogic();
 			boolean checkAfter = userview.userInfoUpdate(map);
 			if(checkAfter) {
-				System.out.println("Succsess");
-				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/Schedule/result.jsp");
+				this.logger.writeInfo("ユーザー情報更新成功");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/otherUser/result.jsp");
 				dispatcher.forward(request, response);
 			}
 			else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/Error.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Error.jsp");
 				dispatcher.forward(request, response);
 			}
 		}
@@ -90,18 +92,17 @@ public class EditUserView extends HttpServlet {
 
 		if(userList.size() == 0) {
 			// エラー処理もしくはエラー画面を導入予定
-			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/Error.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Error.jsp");
 			dispatcher.forward(request, response);
 		} else {
 			request.setAttribute("userList",userList);
 
 			HttpSession session = request.getSession();
 			User loginUser = (User)session.getAttribute("loginUser");
-
 			if(loginUser == null) {
-				response.sendRedirect("/nwproject_B/");
+				response.sendRedirect("/nwproject/");
 			}else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/userList.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/otherUser/userList.jsp");
 				dispatcher.forward(request, response);
 			}
 		}

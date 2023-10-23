@@ -20,7 +20,7 @@ function checkUserInfo() {
         type: "GET",
         // リクエスト先URL
         // Javaのサーブレットを指定する
-        url: fqdn.origin + "/nwproject_B/EditUserView?nowId=" + nowId + "&" +  "userId=" + userId + "&" + "userPass=" + userPass + "&" + "userPerm=" + userPerm,
+        url: fqdn.origin + "/nwproject/EditUserView?nowId=" + nowId + "&" +  "userId=" + userId + "&" + "userPass=" + userPass + "&" + "userPerm=" + userPerm,
         // サーバから返されるデータの型を指定
         // 今回はただの文字列
         dataType: "text"
@@ -33,9 +33,6 @@ function checkUserInfo() {
         		alert("値を更新してください")
         		return false;
         	}
-//        	else if(data === "1") {
-//        		return true;
-//        	}
         	else {
         		alert("登録が完了しました")
         		return true;

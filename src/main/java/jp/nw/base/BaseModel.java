@@ -21,7 +21,6 @@ public class BaseModel extends ActionLog{
 	public BaseModel() {
 		System.out.println("new BaseModel");
 		if(BaseModel.logger != null) {
-			System.out.println("スルー");
 		} else {
 			BaseModel.logger = new ActionLog();
 			BaseModel.logger.getLoggerObj();

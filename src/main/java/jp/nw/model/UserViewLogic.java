@@ -19,6 +19,15 @@ public class UserViewLogic extends BaseModel{
 
 	// 返却情報格納List
 	private List<List<String>> retList = null;
+	
+	// ユーザー名
+	private static String USER_NAME = "name";
+	
+	// ユーザーパスワード
+	private static String USER_PASS = "password";
+	
+	// ユーザー権限
+	private static String USER_PERMS = "permission";
 
 	/**
 	 * ユーザ―情報一覧表示
@@ -75,16 +84,16 @@ public class UserViewLogic extends BaseModel{
 		dbCon = new DBBase();
 
 		try(Connection conn = dbCon.getConnection()){
-			String sql = "SELECT name,password,permission_level FROM users where name =? ORDER BY id";
+			String sql = "SELECT name,password,permission FROM users_info where name =? ORDER BY id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, userId);
 
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {
-				String name = rs.getString("name");
-				String pass = rs.getString("password");
-				int permission = rs.getInt("permission_level");
+				String name = rs.getString(USER_NAME);
+				String pass = rs.getString(USER_PASS);
+				int permission = rs.getInt(USER_PERMS);
 				User mutter = new User(name,pass,permission);
 				userList.add(mutter);
 			}
@@ -110,7 +119,7 @@ public class UserViewLogic extends BaseModel{
 //				JFrame frame = new JFrame();
 //				JOptionPane.showMessageDialog(frame, "値を更新してください");
 			} else {
-				String sql = "UPDATE users Set name = ?, password = ?, permission_level = ? where name=?";
+				String sql = "UPDATE users_info Set name = ?, password = ?, permission = ? where name=?";
 				PreparedStatement ps = conn.prepareStatement(sql);
 				int permission = Integer.parseInt(userPermission) ;
 				ps.setString(1, userId);
@@ -147,7 +156,7 @@ public class UserViewLogic extends BaseModel{
 
 		try {
 			Connection con = dbCon.getConnection();
-			String sql = "SELECT name, password, permission_level FROM users WHERE name = ?";
+			String sql = "SELECT name, password, permission FROM users_info WHERE name = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, nowId);
 
@@ -156,7 +165,7 @@ public class UserViewLogic extends BaseModel{
 			while(rs.next()) {
 				name = rs.getString("name");
 				pass = rs.getString("password");
-				permiss = rs.getInt("permission_level");
+				permiss = rs.getInt("permission");
 			}
 			Integer i = Integer.valueOf(permiss);
 			String perm = i.toString();

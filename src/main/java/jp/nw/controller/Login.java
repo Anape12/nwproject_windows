@@ -101,7 +101,7 @@ public class Login extends HttpServlet {
 						request.getRequestDispatcher("/WEB-INF/jsp/Menu/perMenu.jsp");
 				dispatcher.forward(request, response);
 			} else {
-				System.out.println("ログイン成功（一般）");
+				this.baseModel.writeInfo("ログイン成功（一般）");
 				// ログイン成功（一般）
 				HttpSession session = request.getSession();
 				session.setAttribute("loginUser",user);
@@ -110,7 +110,7 @@ public class Login extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		} else {
-			System.out.println("ログイン失敗");
+			this.baseModel.writeInfo("ログイン失敗");
 			// ログイン失敗
 			RequestDispatcher dispatcher =
 					request.getRequestDispatcher("/WEB-INF/jsp/login/loginMiss.jsp");
