@@ -59,7 +59,7 @@ public class SelectApp extends HttpServlet {
 		session.setAttribute("resultApp", result);
 
 		RequestDispatcher dispatcher =
-				request.getRequestDispatcher("WEB-INF/jsp/appLogic/app.jsp");
+				request.getRequestDispatcher("/WEB-INF/jsp/appLogic/app.jsp");
 		dispatcher.forward(request, response);
 
 	}

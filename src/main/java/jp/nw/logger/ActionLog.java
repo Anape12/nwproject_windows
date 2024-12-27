@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import jp.nw.base.ReadProperties;
+import jp.nw.parts.NwConst;
 
 public class ActionLog {
 
@@ -20,13 +21,13 @@ public class ActionLog {
 
     // ログファイル名
 	private static final String LOGFILE_NAME = "server.log";
-
     
 	public void getLoggerObj() {
 		if(ActionLog.logObj != null) {
 			System.out.println("スルー");
 		} else {
-			this.read = new ReadProperties();
+			String[] params = {NwConst.LEVEL, NwConst.LOGDIR};
+			this.read = new ReadProperties(NwConst.LOGPROPERTIE_PATH, params);
 			ActionLog.logObj = this.getLogObj();
 		}
 	}

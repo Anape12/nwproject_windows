@@ -14,7 +14,7 @@ public class AsyncProcess {
 	protected static void execute(String className, String[] params) {
 		try {
 			Class<?> asyncClass = Class.forName(className);
-			Object asyncObj = asyncClass.newInstance();
+			Object asyncObj = asyncClass.getDeclaredConstructor().newInstance();
 			
 			
 			Method asyncMethod = asyncClass.getMethod("execute");

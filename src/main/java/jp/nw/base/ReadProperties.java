@@ -1,5 +1,7 @@
 package jp.nw.base;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -20,14 +22,23 @@ public class ReadProperties {
     // ログ出力ディレクトリ
     private String logDir = "";
     
-	public ReadProperties() {
+    private List<String> retVals = null;
+    
+	public ReadProperties(String path, String[] params) {
 		
-		ResourceBundle bundle = ResourceBundle.getBundle(LOGPROPERTIE_PATH, Locale.JAPAN);
+//		ResourceBundle bundle = ResourceBundle.getBundle(LOGPROPERTIE_PATH, Locale.JAPAN);
+		ResourceBundle bundle = ResourceBundle.getBundle(path, Locale.JAPAN);
 		
+		if(params.length > 0) {
+			retVals = new ArrayList<String>();
+			for(int cnt = 0; cnt < params.length; cnt++) {
+				retVals.add(bundle.getString(params[cnt]));
+			}			
+		} else {
+			// エラー処理
+		}
 		this.logLv = bundle.getString(LEVEL);
 		this.logDir = bundle.getString(LOGDIR);
-		System.out.println(this.logLv);
-		System.out.println(this.logDir);
 	}
 	
 	public String getLogLv() {
@@ -36,5 +47,9 @@ public class ReadProperties {
 	
 	public String getLogDir() {
 		return this.logDir;
+	}
+	
+	public List<String> getRetVals(){
+		return this.retVals;
 	}
 }

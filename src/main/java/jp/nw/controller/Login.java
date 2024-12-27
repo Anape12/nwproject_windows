@@ -1,10 +1,6 @@
 package jp.nw.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.nw.application.LoginCommand;
 import jp.nw.base.BaseModel;
-import jp.nw.model.LoginLogic;
+import jp.nw.base.CommandData;
 import jp.nw.model.User;
-import jp.nw.parts.DaoPart;
 
 
 /**
@@ -57,63 +53,41 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
+		
+		
+		// コマンド処理の生成
+		LoginCommand command = new LoginCommand();
+		command.setCommandData(this.baseModel.getParameter(request, response));
+		// コマンド処理の実行
+		CommandData output = command.execute();
+		// Outputよりユーザー情報を取得する
+		User user = (User)output.getValue("userobj");
 
-		// パラメータ取得処理
-		Map<String,Object> loginParam = this.baseModel.getParameter(request, response);
-		String name = (String)loginParam.get("userId");
-		String pass = (String)loginParam.get("password");
-
-		// ID/password取得クラス
-		User user = new User(name,pass);
-
-		// SQL情報Map
-		Map<String,Object> sqlInfo = new HashMap<String,Object>();
-		//SELECT情報格納
-		List<String> colum = new ArrayList<>();
-		//WHERE情報格納
-		List<String> sInfo = new ArrayList<>();
-		//SELECT情報格納
-		colum.add("password");
-		colum.add("permission");
-		sqlInfo.put(DaoPart.KOMOKU_INFO.SELECT_INFO,colum);
-		//WHERE情報格納
-		sInfo.add("name");
-		sqlInfo.put(DaoPart.KOMOKU_INFO.WHERE_INFO,sInfo);
-		//Table Name
-		String table = "users_info";
-
-		LoginLogic loginLogic = new LoginLogic();
-		Map<String,Object> isLogin = loginLogic.execute(user, sqlInfo,table);
-
-		// SQL実行結果を取得
-		boolean result = (boolean)isLogin.get("result");
-		// 権限レベルを取得
-		String level = (String) isLogin.get("permission");
-
-		// ログイン後の遷移先画面を選択
-		if(result) {
-			if(level.equals("1")) {
-				this.baseModel.writeInfo("ログイン成功（管理者）");
-				// ログイン成功（管理者画面）
-				HttpSession session = request.getSession();
-				session.setAttribute("loginUser",user);
-				RequestDispatcher dispatcher =
-						request.getRequestDispatcher("/WEB-INF/jsp/Menu/perMenu.jsp");
-				dispatcher.forward(request, response);
-			} else {
-				this.baseModel.writeInfo("ログイン成功（一般）");
-				// ログイン成功（一般）
-				HttpSession session = request.getSession();
-				session.setAttribute("loginUser",user);
-				RequestDispatcher dispatcher =
-						request.getRequestDispatcher("/WEB-INF/jsp/Menu/genMenu.jsp");
-				dispatcher.forward(request, response);
-			}
-		} else {
+		// ログイン処理失敗の場合、エラー画面へ
+		if(output.getValue("permission").equals("99")) {
 			this.baseModel.writeInfo("ログイン失敗");
 			// ログイン失敗
 			RequestDispatcher dispatcher =
 					request.getRequestDispatcher("/WEB-INF/jsp/login/loginMiss.jsp");
+			dispatcher.forward(request, response);
+		}
+		// 管理者権限の場合
+		if(output.getValue("permission").equals("1")) {
+			this.baseModel.writeInfo("ログイン成功（管理者）");
+			// ログイン成功（管理者画面）
+			HttpSession session = request.getSession();
+			session.setAttribute("loginUser",user);
+			RequestDispatcher dispatcher =
+					request.getRequestDispatcher("/WEB-INF/jsp/Menu/perMenu.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			// 権限なしの場合			
+			this.baseModel.writeInfo("ログイン成功（一般）");
+			// ログイン成功（一般）
+			HttpSession session = request.getSession();
+			session.setAttribute("loginUser",user);
+			RequestDispatcher dispatcher =
+					request.getRequestDispatcher("/WEB-INF/jsp/Menu/genMenu.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
