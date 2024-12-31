@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jp.nw.base.ApplicationCommandBase;
+import jp.nw.base.ApplicationCommand;
 import jp.nw.model.LoginLogic;
 import jp.nw.model.User;
 import jp.nw.parts.DaoPart;
 
-public class LoginCommand extends ApplicationCommandBase{
+public class LoginCommand extends ApplicationCommand{
 
 	private String inputName = null;
 	private String inputPass = null;
@@ -74,7 +74,7 @@ public class LoginCommand extends ApplicationCommandBase{
 			return true;
 			
 		} catch (Exception e) {
-			e.toString();
+			this.logger.writeInfo("SQL Error");
 			return false;
 		}
 		
@@ -98,7 +98,7 @@ public class LoginCommand extends ApplicationCommandBase{
 			return true;
 			
 		} catch(Exception e) {
-			e.toString();
+			this.logger.writeInfo("");
 			return false;
 		}
 	}
